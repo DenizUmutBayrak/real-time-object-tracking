@@ -2,22 +2,6 @@ import cv2 as cv
 import numpy as np
 from collections import deque
 
-# ================= VIDEO RECORD (LinkedIn) =================
-record = True          # False yaparsan kayıt olmaz
-fps = 30
-video_seconds = 10
-frame_limit = fps * video_seconds
-frame_count = 0
-
-fourcc = cv.VideoWriter_fourcc(*"mp4v")
-out = cv.VideoWriter(
-    "linkedin_demo.mp4",
-    fourcc,
-    fps,
-    (640, 480)
-)
-# ==========================================================
-
 # Color Range
 lower_red = np.array([0, 150, 120])
 upper_red = np.array([10, 255, 255])
@@ -264,21 +248,8 @@ while True:
 
     cv.imshow("Advanced Tracking", frame)
 
-    # ================= VIDEO RECORD =================
-    if  record and frame_count < frame_limit:
-        out.write(frame)
-        frame_count += 1
-    elif record and frame_count >= frame_limit:
-        record = False
-        out.release()
-        print("🎬 Video recording finished")
-# ================================================
-
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
 
 cap.release()
 cv.destroyAllWindows()
-
-if out.isOpened():
-    out.release()
